@@ -23,7 +23,7 @@ def get_date (word):
         formated_date = create_date(input("Введите дату" + word + "задачи через дефис, например 31-12-2024:"))
     temp_days = int((date_today - formated_date).days)
     if  temp_days > 0:
-        print("Дата " + word + " задачи началась " + str(temp_days) + "дня назад.")
+        print("Дата " + word + " задачи началась " + str(temp_days) + " дня назад.")
     elif temp_days == 0:
         print("Дата " + word + " задачи сегодня!")
     elif temp_days < 0:
@@ -31,6 +31,7 @@ def get_date (word):
     return formated_date
 
 # Значения дат
+print("Текущая дата: " + str(datetime.today().date()))
 start_date = get_date("начала")
 deadline_date = get_date("конца")
 
