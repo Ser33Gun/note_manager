@@ -1,5 +1,8 @@
 from datetime import datetime
 
+from update_status import check_title
+
+
 # Перевод строки в дату, если строка дана в одном из 6 форматов.
 def create_date (str_date):
     formated_date = ""
@@ -110,13 +113,18 @@ def delete_note(notes):
         input_choice = input()
         if int(input_choice) == 0: # Удаление по имени пользователя всех его заметок
             user = input("Введите имя пользователя: ")
+            check_user = True
             for key, n in note_list.items():
                 if user == n["Имя"]:
                     print("Следующая заявка будет удалена:") # В целом можно вынести в отдельную функцию,
                     print_note(notes[key])                   # если будут еще варианты удаления.
                     notes.pop(key)
+                    check_user = False
+                if check_user:
+                    print("У данного пользователя нет заметок. Заметки не удалены!")
         elif int(input_choice) == 1:
             title = input("Введите заголовок: ")
+            check_t = True
             for key, n in note_list.items():
                 for t in n["Заголовок"]:
                     print(t)
@@ -124,6 +132,9 @@ def delete_note(notes):
                         print("Следующая заявка будет удалена:")
                         print_note(notes[key])
                         notes.pop(key)
+                        check_t = False
+            if check_t:
+                print("Заметки с таким заголовком не найдены. Заметки не удалены!")
         else:
             print("Некорректный ввод. Заметки не удалены!")
     else:
