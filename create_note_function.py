@@ -59,7 +59,7 @@ def get_status():
         print("\nВведите статус из списка ниже. Вы можете ввести его полностью или указать число.")
         print("\nСписок статусов:")
         for i in range(len(tuple_status)):
-            print("[" + str(i) + "]: " + tuple_status[i])
+            print(f"[{i}]: {tuple_status[i]}")
         input_status = input()
         check_input = True
         if input_status != "":
@@ -156,13 +156,13 @@ while check_menu:
     print("\nГлавное меню.")
     print("Выберите пункт из меню, вводом нужной цифры:")
     for i in range(len(tuple_menu)):
-        print("[" + str(i) + "]: " + tuple_menu[i])
+        print(f"[{i}]: {tuple_menu[i]}")
     input_menu = int(input())
     if input_menu == 0:
         if notes:
             print("\nСобранная информация о заметках:")
             for id, note in notes.items():
-                print("\n" + id.__str__() + " заметка:")
+                print(f"\n[{id} заметка:")
                 display_note(note)
         else:
             print("Нет сохраненных заметок.")
