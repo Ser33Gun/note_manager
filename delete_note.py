@@ -143,8 +143,8 @@ def delete_note(notes):
 # Форматированный вывод списка
 def print_note (note):
     for key, value in note.items():
-        if key == "titles":
-            for tle in note.get("titles"):
+        if key == "Заголовок":
+            for tle in note.get("Заголовок"):
                 print(f"{key.capitalize()}: {tle}")
             continue
         print(f"{key.capitalize()}: {value}")
