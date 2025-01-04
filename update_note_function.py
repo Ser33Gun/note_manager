@@ -218,7 +218,7 @@ while check_menu:
         if notes:
             print("\nСобранная информация о заметках:")
             for id, note in notes.items():
-                print(f"\n[{id} заметка:")
+                print(f"\n[{id}] заметка:")
             display_note(note)
         else:
             print("Нет сохраненных заметок.")
