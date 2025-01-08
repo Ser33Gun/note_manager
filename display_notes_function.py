@@ -1,4 +1,7 @@
 from datetime import datetime, timedelta
+from colorama import Fore, Back, Style
+
+tuple_keys = ("ID", "Имя", "Заголовок", "Описание", "Статус", "Дата начала", "Дата истечения")
 
 # Перевод строки в дату, если строка дана в одном из 6 форматов.
 def create_date (str_date):
@@ -10,14 +13,14 @@ def create_date (str_date):
         except ValueError:
             pass
     if formated_date == "":
-        print("Дата задачи введена некорректно! Повторите ввод.")
+        print(Fore.LIGHTRED_EX + "Дата задачи введена некорректно! Повторите ввод.")
         return 1
     return formated_date
 
 # Сравнение даты + возврат даты.
 def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%Y-%m-%d").date()):
     date_today = datetime.today().date()
-    print(f"Введите дату {word} задачи через дефис, например 31-12-2024:")
+    print(Fore.LIGHTYELLOW_EX + f"Введите дату {word} задачи через дефис, например 31-12-2024:")
     if word.capitalize() == "Начала":
         output = "Если введена пустая строка, то дата " + word + " будет равна текущей дате."
     elif word.capitalize() == "Конца":
@@ -32,50 +35,49 @@ def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%
     # Если начало заметки - сегодня, если окончание - через неделю.
     if str_date == "":
         if word.capitalize() == "Начала":
-            print("Дата начала заметки установлена на сегодня.")
+            print(Fore.LIGHTGREEN_EX + "Дата начала заметки установлена на сегодня.")
             return date_today
         else:
-            print("Дата истечения заметки установлена через 7 дней.")
+            print(Fore.LIGHTGREEN_EX + "Дата истечения заметки установлена через 7 дней.")
             return date_today + timedelta(7)
 
     # Если не пустая строка, то
     formated_date = create_date(str_date)
     while formated_date == 1:
-        formated_date = create_date(input(f"Введите дату {word} задачи через дефис, например 31-12-2024:"))
+        formated_date = create_date(input(Fore.LIGHTYELLOW_EX + f"Введите дату {word} задачи через дефис, например 31-12-2024:"))
 
     # Дата начала меньше даты истечения. (Проверка)
     if word.capitalize() == "Начала":
         if formated_date > issue_date:
-            print("Введенная дата начала больше, чем дата истечения. Изменения не внесены.")
+            print(Fore.LIGHTRED_EX + "Введенная дата начала больше, чем дата истечения. Изменения не внесены.")
             return date
 
     # Дата конца больше текущей даты. (Проверка)
     if word.capitalize() == "Конца":
         if formated_date < date_today:
             if date is None:
-                print(f"Дата {word} задачи сегодня!")
+                print(Fore.LIGHTGREEN_EX + f"Дата {word} задачи сегодня!")
                 return date_today
             else:
-                print("Введенная дата истечения меньше, чем текущая. Изменения не внесены.")
+                print(Fore.LIGHTRED_EX + "Введенная дата истечения меньше, чем текущая. Изменения не внесены.")
                 return date
 
     temp_days = int((date_today - formated_date).days)
     if  temp_days > 0:
-        print(f"Дата {word} задачи началась {temp_days} дня назад.")
+        print(Fore.LIGHTGREEN_EX + f"Дата {word} задачи началась {temp_days} дня назад.")
     elif temp_days == 0:
-        print(f"Дата {word} задачи сегодня!")
+        print(Fore.LIGHTGREEN_EX + f"Дата {word} задачи сегодня!")
     elif temp_days < 0:
-        print(f"Дата {word} задачи через {(temp_days)} дня.")
+        print(Fore.LIGHTGREEN_EX + f"Дата {word} задачи через {(temp_days)} дня.")
     return formated_date
 
 #Ввод статуса заявки из списка, остальные статусы отбрасываются.
 def get_status():
-    status = ""
     check_status = True
     tuple_status = ("Новая", "В процессе", "Отложено", "Выполнено", "Отменено")
     while check_status:
-        print("\nВведите статус из списка ниже. Вы можете ввести его полностью или указать число.")
-        print("Список статусов:")
+        print(Fore.LIGHTYELLOW_EX + "\nВведите статус из списка ниже. Вы можете ввести его полностью или указать число.")
+        print(Fore.LIGHTWHITE_EX + "Список статусов:")
         for i in range(len(tuple_status)):
             print(f"[{i}]: {tuple_status[i]}")
         input_status = input()
@@ -86,25 +88,26 @@ def get_status():
                 if input_status.capitalize() == tuple_status[i] or (input_status.isdigit() and int(input_status) == i):
                     return tuple_status[i]
             if check_input:
-                print("\nНет такого статуса в списке. Статус не изменен.")
+                print(Fore.LIGHTRED_EX + "\nНет такого статуса в списке. Статус не изменен.")
 
 # Ввод элемента и его проверка на пустую строку.
 def get_input(text):
-    value = input(text).capitalize()
+    value = input(Fore.LIGHTYELLOW_EX + text).capitalize()
     while value == "":
-        print("Пустой ввод! Введите значение.")
-        value = input(text).capitalize()
+        print(Fore.LIGHTRED_EX + "Пустой ввод! Введите значение.")
+        value = input(Fore.LIGHTYELLOW_EX + text).capitalize()
     return value
 
 # Создание одной заметки
-def create_one_note():
+def create_one_note(id):
     note = {
-        "Имя": get_input("Введите имя пользователя: "),
-        "Описание": get_input("Введите описание заметки: "),
-        "Заголовок": get_input("Введите заголовок заметки: "),
-        "Статус": get_status(),
-        "Дата создания заметки": get_date("начала"),
-        "Дата истечения активности заметки": get_date("конца")
+        tuple_keys[0] : str(id),
+        tuple_keys[1] : get_input(Back.RESET + "Введите имя пользователя: "),
+        tuple_keys[2]: get_input("Введите заголовок заметки: "),
+        tuple_keys[3] : get_input("Введите описание заметки: "),
+        tuple_keys[4] : get_status(),
+        tuple_keys[5] : get_date("начала"),
+        tuple_keys[6] : get_date("конца")
     }
     return note
 
@@ -113,128 +116,174 @@ def add_note (notes):
     check_new_note = True
     while check_new_note:
         count = 1
-        if notes:
-            nk = notes.keys()
-            check_exist = True
+        check_exist = True
 
-            for i in range(len(nk)):
-                count += i
-                if count not in nk:
-                    check_exist = False
-                    break
-            if check_exist:
-                count = len(nk) + 1
-
-        notes[count] = create_one_note()
-        if input("Если Вы хотите добавить еще одну заметку введите 'Да':").capitalize() != "Да":
+        #Подбор первого свободного значения ID.
+        while check_exist:
+            if len(notes) > 0:
+                for i in range(len(notes)):
+                    if str(count) == notes[i][tuple_keys[0]]:
+                        check_exist = True
+                        count += 1
+                        break
+                    else:
+                        check_exist = False
+            else:
+                check_exist = False
+        notes.append(create_one_note(count))
+        if input(Fore.LIGHTCYAN_EX + "Если Вы хотите добавить еще одну заметку введите 'Да':").capitalize() != "Да":
             check_new_note = False
 
 # Обновление значения.
 def update_note(notes):
-    tuple_keys = ("Имя", "Описание", "Заголовок", "Статус", "Дата создания заметки", "Дата истечения активности заметки")
-    num = int(input("Введите номер заявки, который хотите обновить:"))
+    id = str(input(Fore.LIGHTYELLOW_EX + "Введите номер заявки, который хотите обновить:"))
 
     # Проверка номера заявки.
-    if num in notes.keys():
-        check_key = True
-        while check_key:
-            print("Список ключей:")
-            for i in range(len(tuple_keys)):
-                print(f"[{i}]: {tuple_keys[i]}")
-            key = int(input("Введи номер ключа для изменения из списка:"))
-            # Проверка ключа. Если есть совпадение - вызываем соответствующую функцию.
-            if key in range(len(tuple_keys)):
-                temp = ""
-                if key == 0:
-                    temp = get_input("Введите новое имя пользователя: ")
-                if key == 1:
-                    temp = get_input("Введите новое описание заметки: ")
-                if key == 2:
-                    temp = get_input("Введите новый заголовок заметки: ")
-                if key == 3:
-                    temp = get_status()
-                if key == 4:
-                    temp = get_date("начала", notes[num][tuple_keys[4]], notes[num][tuple_keys[5]])
-                if key == 5:
-                    temp = get_date("конца", notes[num][tuple_keys[5]])
-                if input("Если Вы уверены, что хотите обновить поле введите Да:").capitalize() == "Да":
-                    notes[num][tuple_keys[key]] = temp
-                    print(f"В заметке №{num} ключ {tuple_keys[key]} изменен на {notes[num][tuple_keys[key]]}")
+    for i in range(len(notes)):
+        if id in notes[i][tuple_keys[0]]:
+            check_key = True
+            while check_key:
+                print(Fore.LIGHTWHITE_EX + "Список ключей для изменения.:")
+                for j in range(1, len(tuple_keys)):
+                    print(f"[{j}]: {tuple_keys[j]}")
+                key = int(input(Fore.LIGHTYELLOW_EX + "Введи номер ключа для изменения из списка:"))
+
+                # Проверка ключа. Если есть совпадение - вызываем соответствующую функцию.
+                # ID - внутреннее значение, не даем изменить.
+                if key in range(len(tuple_keys)):
+                    temp = ""
+                    if key == 1:
+                        temp = get_input("Введите новое имя пользователя: ")
+                    elif key == 2:
+                        temp = get_input("Введите новый заголовок заметки: ")
+                    elif key == 3:
+                        temp = get_input("Введите новое описание заметки: ")
+                    elif key == 4:
+                        temp = get_status()
+                    elif key == 5:
+                        temp = get_date("начала", notes[i][tuple_keys[4]], notes[i][tuple_keys[5]])
+                    elif key == 6:
+                        temp = get_date("конца", notes[i][tuple_keys[5]])
+
+                    # Уточняем перед внесением изменений.
+                    if input(Fore.LIGHTCYAN_EX + "Если Вы уверены, что хотите обновить поле, введите Да:").capitalize() == "Да":
+                        notes[i][tuple_keys[key]] = temp
+                        print(Fore.LIGHTGREEN_EX + f"В заметке №{i} ключ {tuple_keys[key]} изменен на {notes[i][tuple_keys[key]]}")
+                    else:
+                        print(Fore.LIGHTCYAN_EX + "Пользователь отказался от внесения изменений.")
                 else:
-                    print("Пользователь отказался от внесения изменений.")
-            else:
-                print("Нет ключа c таким номером.")
-            if input("Вы хотите внести другие изменения в эту заметку? ").capitalize() != "Да":
-                display_note(notes[num])
-                check_key = False
+                    print(Fore.LIGHTRED_EX + "Нет ключа c таким номером.")
+                if input(Fore.LIGHTCYAN_EX + "Вы хотите внести другие изменения в эту заметку? ").capitalize() != "Да":
+                    display_note(notes, i)
+                    check_key = False
 
 #Удаление заявки (проверка и вызов удаления)
 def delete_note(notes):
     # Подфункция фактического удаление заметки
-    def sub_del(text, key, note):
+    def sub_del(text, key):
         check_user = True
-        for k, n in note.items():
-            if text == n[key]:
-                print("Следующая заявка будет удалена:")
-                display_note(notes[k])
-                notes.pop(k)
+        #temp_notes = notes.copy()
+        for i in reversed(range(len(notes))):
+            if str(text) == notes[i][key]:
+                print(Fore.LIGHTGREEN_EX +"Следующая заявка будет удалена:")
+                display_note(notes, i)
+                notes.pop(i)
                 check_user = False
         if check_user:
-            print("У данного пользователя нет заметок. Заметки не удалены!")
+            print(Fore.LIGHTRED_EX +"Нет подходящих заметок для удаления.")
 
     if notes:
-        note_list = notes.copy()
-        print("Выберите, что удаляем:")
-        print("[0]: Все заметки пользователя.")
-        print("[1]: Заметку с определенным заголовком. (для всех пользователей)")
-        input_choice = input()
-        if int(input_choice) == 0: # Удаление по имени пользователя всех его заметок
-            user = input("Введите имя пользователя: ")
-            sub_del(user, "Имя", note_list)
-        elif int(input_choice) == 1:
-            title = input("Введите заголовок: ")
-            sub_del(title, "Заголовок", note_list)
+        print(Fore.RED + "Выберите, что удаляем:")
+        print(Fore.LIGHTWHITE_EX + "[0]: Заметку с выбранным ID.")
+        print("[1]: Все заметки пользователя.")
+        print("[2]: Заметку с определенным заголовком. (для всех пользователей)")
+        input_choice = int(input())
+        if input_choice == 0: # Удаление заметки по ID
+            id = input(Fore.LIGHTYELLOW_EX + "Введите номер ID: ")
+            sub_del(id, tuple_keys[input_choice])
+        elif int(input_choice) == 1: # Удаление по имени пользователя всех его заметок
+            user = input(Fore.LIGHTYELLOW_EX + "Введите имя пользователя: ")
+            sub_del(user, tuple_keys[input_choice])
+        elif int(input_choice) == 2:
+            title = input(Fore.LIGHTYELLOW_EX + "Введите заголовок: ")
+            sub_del(title, tuple_keys[input_choice])
         else:
-            print("Некорректный ввод. Заметки не удалены!")
+            print(Fore.RED + "Некорректный ввод. Заметки не удалены!")
     else:
-        print("Нет сохраненных заметок!")
+        print(Fore.LIGHTRED_EX + "Нет сохраненных заметок!")
 
 # Форматированный вывод списка
-def display_note (note):
-    for key, value in note.items():
-        print(f"{key.capitalize()}: {value}")
+def display_note (note, key = None, full = True):
+    max_columns = []
+    print(len(note))
+    # Получаем максимальную длину столбца.
+    for j in range(len(tuple_keys)):
+        len_el = []
+        for i in range(len(note)):
+            if len(str(note[i][tuple_keys[j]])) >= len(tuple_keys[j]):
+                len_el.append(len(note[i][tuple_keys[j]]))
+            else:
+                len_el.append(len(tuple_keys[j]))
+        max_columns.append(max(len_el))
 
+    # Таблично выводим значения + красим вывод.
+    if full:
+        end = len(tuple_keys)
+        eq = sum(max_columns) + 14
+    else:
+        end = 3
+        eq = sum(max_columns[:3]) + 6
+    for i in range(end):
+        print(Fore.LIGHTBLUE_EX + Style.NORMAL + f'{tuple_keys[i]:{max_columns[i] + 1}}', end='|')
+    print()
+    print(Fore.LIGHTWHITE_EX + f'{"=" * eq}')
+    for i in range(len(note)):
+        if key is not None:
+            if i == key:
+                for j in range(end):
+                    print(Fore.MAGENTA + f'{str(note[i][tuple_keys[j]]):{max_columns[j] + 1}}', end='|')
+        else:
+            for j in range(end):
+                if i % 5 == 0 and i != 0 and j == 0:
+                    input(Fore.LIGHTCYAN_EX + "Для продолжения ввода нажмите Enter:")
+                print(Fore.MAGENTA + f'{str(note[i][tuple_keys[j]]):{max_columns[j] + 1}}', end='|')
+            print()
+
+
+# Меню.
 tuple_menu = ("Вывести текущие заметки", "Добавить заметку", "Удалить заметку", "Изменить заметку", "Выход")
-notes = {} #Файл для хранения всех заметок.
+notes = [{'ID': '1', 'Имя': 'Сергей', 'Заголовок': 'З', 'Описание': 'О', 'Статус': 'Новая', 'Дата начала': str(datetime.strptime("2025-01-08", "%Y-%m-%d")), 'Дата истечения': str(datetime.strptime("2025-01-15", "%Y-%m-%d"))},
+         {'ID': '2', 'Имя': 'Сергей', 'Заголовок': 'За', 'Описание': 'Оп', 'Статус': 'Новая', 'Дата начала': str(datetime.strptime("2025-01-08", "%Y-%m-%d")), 'Дата истечения': str(datetime.strptime("2025-01-15", "%Y-%m-%d"))},
+         {'ID': '3', 'Имя': 'Сергей', 'Заголовок': 'Заг', 'Описание': 'Опи', 'Статус': 'Новая', 'Дата начала': str(datetime.strptime("2025-01-08", "%Y-%m-%d")), 'Дата истечения': str(datetime.strptime("2025-01-15", "%Y-%m-%d"))}] # Файл для хранения всех заметок.
 check_menu = True
-print("Добро пожаловать в Менеджер заметок!")
+print(Fore.LIGHTWHITE_EX + "Добро пожаловать в Менеджер заметок!")
 while check_menu:
-    print("\nГлавное меню.")
+    print("\n" + Back.RESET + Fore.LIGHTWHITE_EX + "Главное меню.")
     print("Выберите пункт из меню, вводом нужной цифры:")
     for i in range(len(tuple_menu)):
         print(f"[{i}]: {tuple_menu[i]}")
     input_menu = int(input())
     if input_menu == 0:
         if notes:
-            print("\nСобранная информация о заметках:")
-            for id, note in notes.items():
-                print(f"\n[{id}] заметка:")
-                display_note(note)
+            full = True
+            if input(
+                    Fore.LIGHTCYAN_EX + "\n Если Вы хотите получить только имя пользователя и заголовок заметки, введите Да:").capitalize() == "Да":
+                full = False
+            print(Fore.GREEN + "Собранная информация о заметках:")
+            display_note(notes,None ,full)
         else:
-            print("Нет сохраненных заметок.")
+            print(Fore.RED + "Нет сохраненных заметок.")
     elif input_menu == 1:
         add_note(notes)
     elif input_menu == 2:
         delete_note(notes)
     elif input_menu == 3:
         if notes:
-            print("\nСобранная информация о заметках:")
-            for id, note in notes.items():
-                print(f"\n[{id} заметка:")
-                display_note(note)
-                update_note(notes)
+            print("\n" + Fore.RED + "Собранная информация о заметках:")
+            display_note(notes)
+            update_note(notes)
         else:
-            print("Нет сохраненных заметок.")
+            print(Fore.RED + "Нет сохраненных заметок.")
     elif input_menu == 4:
-        print("Программа завершается, до свидания!")
+        print(Fore.LIGHTGREEN_EX +"Программа завершается, до свидания!")
         exit(0)
