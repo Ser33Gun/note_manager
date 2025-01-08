@@ -215,7 +215,6 @@ def delete_note(notes):
 # Форматированный вывод списка
 def display_note (note, key = None, full = True):
     max_columns = []
-    print(len(note))
     # Получаем максимальную длину столбца.
     for j in range(len(tuple_keys)):
         len_el = []
