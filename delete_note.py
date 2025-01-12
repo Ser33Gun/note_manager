@@ -7,7 +7,7 @@ def delete_note(notes):
     def sub_del(text, key):
         check_note = True
         for i in reversed(range(len(notes))):
-            if str(text) == notes[i][key]:
+            if str(text) in notes[i][key]:
                 print(Fore.LIGHTGREEN_EX +"Следующая заявка будет удалена:")
                 display_note(notes, i)
                 if input(Fore.LIGHTCYAN_EX + "\nЕсли Вы хотите удалить данную заявку введите Да:").capitalize() == "Да":

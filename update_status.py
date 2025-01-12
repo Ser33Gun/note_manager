@@ -10,16 +10,13 @@ note = {
     "created_date" : input("Введите дату создания заметки в формате 'день-месяц-год': "),
     "issue_date" : input("Введите дату истечения заметки в формате 'день-месяц-год': ")
 }
-
+#Цикл для ввода заголовков
 check_next_title = True #Чек пустой строки
 while check_next_title:
     title = input("Введите заголовок заметки (или оставьте пустым для завершения): ")
+    print(note.get("titles"))
     if title != "":
-        check_title = True # Чек совпадения
-        for tle in note.get("titles"):
-            if title == tle:
-                check_title = False # Если совпало - переключаем чек
-        if check_title:
+        if title not in note.get("titles"):
             note["titles"].append(title)
     else:
         check_next_title = False
@@ -31,17 +28,18 @@ print("\nСписок статусов:")
 for i in range(len(tuple_status)):
     print("[" + str(i) + "]: " + tuple_status[i])
 
-input_status = input()
-check_status = False
-if input_status != "":
-    # Проверяем ввод. Если есть цифра или слово из списка - меняем
-    for i in range(len(tuple_status)):
-        if input_status.capitalize() == tuple_status[i] or (input_status.isdigit() and int(input_status)== i):
-            note["status"] = tuple_status[i]
-            check_status = True
+check_status = True
+while check_status:
+    input_status = input("Введите цифру или название статуса:")
+    if input_status != "":
+        # Проверяем ввод. Если есть цифра или слово из списка - меняем
+        for i in range(len(tuple_status)):
+            if input_status.capitalize() == tuple_status[i] or (input_status.isdigit() and int(input_status)== i):
+                note["status"] = tuple_status[i]
+            check_status = False
             print("\nСтатус изменен на " + tuple_status[i] + ".")
-    if not check_status:
-        print("\nНет такого статуса в списке. Статус не изменен.")
+        if check_status:
+            print("\nНет такого статуса в списке. Статус не изменен.")
 
 #Вывод всей заметки в структурированном виде.
 print("\nСобранная информация о заметке:")

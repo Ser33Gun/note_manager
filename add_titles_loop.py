@@ -12,11 +12,7 @@ check_next_title = True #Чек пустой строки
 while check_next_title:
     title = input("Введите заголовок заметки (или оставьте пустым для завершения): ")
     if title != "":
-        check_title = True # Чек совпадения
-        for tle in note.get("titles"):
-            if title == tle:
-                check_title = False # Если совпало - переключаем чек
-        if check_title:
+        if title not in note.get("titles"):
             note["titles"].append(title)
     else:
         check_next_title = False
