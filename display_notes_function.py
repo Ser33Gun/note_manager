@@ -1,9 +1,25 @@
 from colorama import Fore, Back, Style
 from create_note_function import tuple_keys
 
+# Сортировка списка для вывода
+def sort_for_display(note):
+    if input(Fore.LIGHTCYAN_EX +"Если Вы хотите отсортировать вывод списка, то введите Да:").capitalize() == "Да":
+        print(Fore.LIGHTWHITE_EX + "Список ключей для сортировки:")
+        for j in range(len(tuple_keys)):
+            print(f"[{j}]: {tuple_keys[j]}")
+        key = int(input(Fore.LIGHTYELLOW_EX + "Введи номер ключа для изменения из списка:"))
+        if input(Fore.LIGHTCYAN_EX +"Если Вы хотите отсортировать список в обратном порядке, то введите Да:").capitalize() == "Да":
+            s = True
+        else:
+            s = False
+        # Лямбда-функцию честно слямзил с интернета, сам не особо понимаю, что она делает.
+        return sorted(note, key = lambda x: x[tuple_keys[key]], reverse=s)
+    else:
+        return note
 
 # Форматированный вывод списка
 def display_note (note, key = None, full = True):
+    note = sort_for_display(note)
     max_columns = []
     # Получаем максимальную длину столбца.
     for j in range(len(tuple_keys)):
