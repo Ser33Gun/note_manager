@@ -64,7 +64,7 @@ def get_status():
         if input_status != "":
             # Проверяем ввод. Если есть цифра или слово из списка - меняем
             for i in range(len(tuple_status)):
-                if input_status.capitalize() == tuple_status[i] or (input_status.isdigit() and int(input_status) == i):
+                if input_status.capitalize() in tuple_status[i] or (input_status.isdigit() and int(input_status) == i):
                     return tuple_status[i]
             if check_input:
                 print(Fore.LIGHTRED_EX + "\nНет такого статуса в списке. Статус не изменен.")
@@ -82,7 +82,7 @@ def create_one_note(id):
     note = {
         tuple_keys[0] : str(id),
         tuple_keys[1] : get_input(Back.RESET + "Введите имя пользователя: "),
-        tuple_keys[2]: get_input("Введите заголовок заметки: "),
+        tuple_keys[2] : get_input("Введите заголовок заметки: "),
         tuple_keys[3] : get_input("Введите описание заметки: "),
         tuple_keys[4] : get_status(),
         tuple_keys[5] : get_date("начала"),
@@ -99,9 +99,10 @@ def add_note (notes):
 
         #Подбор первого свободного значения ID.
         while check_exist:
-            if len(notes) > 0:
+            #if len(notes) > 0:
+            if notes:
                 for i in range(len(notes)):
-                    if str(count) == notes[i][tuple_keys[0]]:
+                    if str(count) in notes[i][tuple_keys[0]]:
                         check_exist = True
                         count += 1
                         break
