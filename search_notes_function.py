@@ -1,4 +1,6 @@
 from colorama import Fore, Style
+
+import create_note_function
 from display_notes_function import display_note
 from create_note_function import tuple_keys
 
@@ -11,14 +13,25 @@ def search_logic (notes, i, j, keyword=None, status=None):
     elif keyword is not None:
         return keyword.lower() in notes[i][tuple_keys[j]].lower()
 
-#Непосредственно функция поиска.
-def search_notes(notes, keyword=None, status=None):
+# Непосредственно функция поиска.
+def search_notes(notes):
+    if not notes:
+        print(Fore.LIGHTRED_EX + "Нет сохраненных заметок.")
+        return
+
+    keyword = status = None
+    if input(Fore.LIGHTCYAN_EX + "Если Вы хотите сделать поиск по статусу, то введите Да:").capitalize() == "Да":
+        status = create_note_function.get_status()
+    if input(
+            Fore.LIGHTCYAN_EX + "Если Вы хотите сделать поиск по ключевому слову, то введите Да:").capitalize() == "Да":
+        keyword = create_note_function.get_input(
+            "Введите ключевое слово для поиска в ключах Имя, Заголовок, Описание, Статус:")
     note = []
     if keyword is None and status is None:
         print(Fore.LIGHTRED_EX + "Ключевых слов не указано! Поиск не был произведен.")
         return
     for i in range(len(notes)):
-        for j in range(1, len(tuple_keys) - 2): # Даты при поиске не учитываются.
+        for j in range(1, len(tuple_keys)):
             if search_logic(notes, i, j, keyword, status):
                 note.append(notes[i])
                 break

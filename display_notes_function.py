@@ -8,6 +8,8 @@ def sort_for_display(note):
         for j in range(len(tuple_keys)):
             print(f"[{j}]: {tuple_keys[j]}")
         key = int(input(Fore.LIGHTYELLOW_EX + "Введи номер ключа для изменения из списка:"))
+        while not key in range(len(tuple_keys)):
+            key = int(input(Fore.LIGHTRED_EX + "Неверно введен ключ. Введите номер ключа для изменения из списка:"))
         if input(Fore.LIGHTCYAN_EX +"Если Вы хотите отсортировать список в обратном порядке, то введите Да:").capitalize() == "Да":
             s = True
         else:
@@ -19,6 +21,12 @@ def sort_for_display(note):
 
 # Форматированный вывод списка
 def display_note (note, key = None, full = True):
+    if not note:
+        print(Fore.LIGHTRED_EX + "Нет сохраненных заметок.")
+        return
+    if input(Fore.LIGHTCYAN_EX + "\nЕсли Вы хотите получить только ID, имя пользователя и заголовок заметки, введите Да:").capitalize() == "Да":
+        full = False
+    print(Fore.LIGHTGREEN_EX + "Собранная информация о заметках:")
     note = sort_for_display(note)
     max_columns = []
     # Получаем максимальную длину столбца.
@@ -49,7 +57,7 @@ def display_note (note, key = None, full = True):
                     print(Fore.MAGENTA + f'{str(note[i][tuple_keys[j]]):{max_columns[j] + 1}}', end='|')
         else:
             for j in range(end):
-                if i % 5 == 0 and i :
+                if i % 5 == 0 and i and not j:
                     input(Fore.LIGHTCYAN_EX + "Для продолжения ввода нажмите Enter:")
                 print(Fore.MAGENTA + f'{str(note[i][tuple_keys[j]]):{max_columns[j] + 1}}', end='|')
             print()

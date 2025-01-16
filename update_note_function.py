@@ -5,11 +5,11 @@ from display_notes_function import display_note
 
 # Обновление значения.
 def update_note(notes):
-    id = str(input(Fore.LIGHTYELLOW_EX + "Введите номер заявки, который хотите обновить:"))
+    id = int(input(Fore.LIGHTYELLOW_EX + "Введите номер заявки, который хотите обновить:"))
 
     # Проверка номера заявки.
     for i in range(len(notes)):
-        if id in notes[i][tuple_keys[0]]:
+         if id is notes[i][tuple_keys[0]]:
             check_key = True
             while check_key:
                 print(Fore.LIGHTWHITE_EX + "Список ключей для изменения.:")
@@ -45,3 +45,20 @@ def update_note(notes):
                 if input(Fore.LIGHTCYAN_EX + "Вы хотите внести другие изменения в эту заметку? ").capitalize() != "Да":
                     display_note(notes, i)
                     check_key = False
+
+# Функция для проверки и добавления только заметок с ID, которые отсутствуют.
+# Получаем new_notes из JSON-файла.
+def check_exist_notes(exist_notes, new_notes):
+    temp_notes = []
+    if exist_notes:
+        # Делаем проверку по ID. Если нет такого ID - добавляем, если есть - пропускаем.
+        for n in new_notes:
+            check_exist = True
+            for j in range(len(exist_notes)):
+                if n["Id"] is exist_notes[j]["Id"]:
+                    check_exist = False
+            if check_exist:
+                temp_notes.append(n)
+        return temp_notes
+    else:
+        return new_notes

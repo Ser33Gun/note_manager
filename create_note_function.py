@@ -13,7 +13,7 @@ def create_date (str_date):
             pass
     if formated_date == "":
         print(Fore.LIGHTRED_EX + "Дата задачи введена некорректно! Повторите ввод.")
-        return 1
+        return None
     return formated_date
 
 # Сравнение даты + возврат даты.
@@ -41,7 +41,7 @@ def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%
 
     # Если не пустая строка, то
     formated_date = create_date(str_date)
-    while formated_date == 1:
+    while formated_date is None:
         formated_date = create_date(input(Fore.LIGHTYELLOW_EX + f"Введите дату {word} задачи через дефис, например 31-12-2024:"))
 
     # Дата начала меньше даты истечения. (Проверка)
@@ -49,6 +49,7 @@ def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%
         if formated_date > issue_date:
             print(Fore.LIGHTRED_EX + "Введенная дата начала больше, чем дата истечения. Изменения не внесены.")
             return date
+    return formated_date
 
 #Ввод статуса заявки из списка, остальные статусы отбрасываются.
 def get_status():
@@ -80,13 +81,13 @@ def get_input(text):
 # Создание одной заметки
 def create_one_note(id):
     note = {
-        tuple_keys[0] : str(id),
+        tuple_keys[0] : id,
         tuple_keys[1] : get_input(Back.RESET + "Введите имя пользователя: "),
         tuple_keys[2] : get_input("Введите заголовок заметки: "),
         tuple_keys[3] : get_input("Введите описание заметки: "),
         tuple_keys[4] : get_status(),
-        tuple_keys[5] : get_date("начала"),
-        tuple_keys[6] : get_date("конца")
+        tuple_keys[5] : str(get_date("начала")),
+        tuple_keys[6] : str(get_date("конца"))
     }
     return note
 
@@ -115,4 +116,4 @@ def add_note (notes):
             check_new_note = False
 
 # Кортеж с ключами.
-tuple_keys = ("ID", "Имя", "Заголовок", "Описание", "Статус", "Дата начала", "Дата истечения")
+tuple_keys = ("Id", "Имя", "Заголовок", "Описание", "Статус", "Дата начала", "Дата истечения")
