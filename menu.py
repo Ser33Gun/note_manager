@@ -39,7 +39,7 @@ def menu_function (notes):
         elif input_menu == 4:
             search_notes(notes)
         elif input_menu == 5:
-            rf = check_exist_notes(notes, load_notes_json('ex.json'))
+            rf = check_exist_notes(notes, load_notes_json('ex1.json'))
             if rf:
                 notes.extend(rf)
                 print(Fore.LIGHTGREEN_EX + "Добавление значений из файла произведена успешно!")
