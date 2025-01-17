@@ -53,22 +53,20 @@ def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%
 
 #Ввод статуса заявки из списка, остальные статусы отбрасываются.
 def get_status():
-    check_status = True
     tuple_status = ("Новая", "В процессе", "Отложено", "Выполнено", "Отменено")
-    while check_status:
+    while True:
         print(Fore.LIGHTYELLOW_EX + "\nВведите статус из списка ниже. Вы можете ввести его полностью или указать число.")
         print(Fore.LIGHTWHITE_EX + "Список статусов:")
         for i in range(len(tuple_status)):
             print(f"[{i}]: {tuple_status[i]}")
         input_status = input()
-        check_input = True
         if input_status != "":
             # Проверяем ввод. Если есть цифра или слово из списка - меняем
             for i in range(len(tuple_status)):
                 if input_status.capitalize() in tuple_status[i] or (input_status.isdigit() and int(input_status) == i):
                     return tuple_status[i]
-            if check_input:
-                print(Fore.LIGHTRED_EX + "\nНет такого статуса в списке. Статус не изменен.")
+            else:
+                print(Fore.LIGHTRED_EX + "\nНет такого статуса в списке. Введите статус заново.")
 
 # Ввод элемента и его проверка на пустую строку.
 def get_input(text):
@@ -100,7 +98,6 @@ def add_note (notes):
 
         #Подбор первого свободного значения ID.
         while check_exist:
-            #if len(notes) > 0:
             if notes:
                 for i in range(len(notes)):
                     if str(count) in notes[i][tuple_keys[0]]:

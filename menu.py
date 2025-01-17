@@ -18,9 +18,9 @@ from display_notes_function import display_note
 # Меню.
 def menu_function (notes):
     tuple_menu = ("Вывести текущие заметки", "Добавить заметку", "Удалить заметку", "Изменить заметку", "Найти заметку", "Прочитать из файла","Записать в файл", "Выход")
-    check_menu = True
     print(Fore.LIGHTWHITE_EX + "Добро пожаловать в Менеджер заметок!")
-    while check_menu:
+    # Меню отображается в бесконечном цикле, выход по ключу меню.
+    while True:
         print("\n" + Back.RESET + Fore.LIGHTWHITE_EX + "Главное меню.")
         print("Выберите пункт из меню, вводом нужной цифры:")
         for i in range(len(tuple_menu)):
@@ -39,7 +39,7 @@ def menu_function (notes):
         elif input_menu == 4:
             search_notes(notes)
         elif input_menu == 5:
-            rf = check_exist_notes(notes, load_notes_json('ex1.json'))
+            rf = check_exist_notes(notes, load_notes_json('ex.json'))
             if rf:
                 notes.extend(rf)
                 print(Fore.LIGHTGREEN_EX + "Добавление значений из файла произведена успешно!")
@@ -47,7 +47,9 @@ def menu_function (notes):
             save_notes_json(notes, 'ex.json')
         elif input_menu == 7:
             print(Fore.LIGHTGREEN_EX +"Программа завершается, до свидания!")
-            exit(0)
+            break
+        else:
+            print(Fore.LIGHTRED_EX + "Введен некорректный ключ. Повторите ввод!")
 
 # Файл для хранения всех заметок.
 notes = []

@@ -56,8 +56,8 @@ def check_exist_notes(exist_notes, new_notes):
             check_exist = True
             for j in range(len(exist_notes)):
                 if n["Id"] is exist_notes[j]["Id"]:
-                    check_exist = False
-            if check_exist:
+                    break
+            else:
                 temp_notes.append(n)
         return temp_notes
     else:
