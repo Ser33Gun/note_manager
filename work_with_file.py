@@ -13,7 +13,8 @@ def load_notes_from_file(file_name):
     notes = []
     temp_tuple = {}
     try:
-        file = open(file_name, 'r', encoding='utf-8')
+        with open(file_name, 'r', encoding='utf-8') as file:
+            text = file.read().split('\n')
     except FileNotFoundError:
        print(Fore.LIGHTRED_EX + f"Файл {file_name} не найден." + Fore.LIGHTCYAN_EX + " Создан пустой файл.")
        with open(file_name, 'x', encoding='utf-8') as file:
@@ -28,7 +29,6 @@ def load_notes_from_file(file_name):
         print(Fore.LIGHTRED_EX + "Неизвестная ошибка. Функция остановлена!")
         return []
 
-    text = file.read().split('\n')
     count = 0
     for s in text:
         if s:
@@ -41,7 +41,6 @@ def load_notes_from_file(file_name):
                 notes.append(temp_tuple)
                 count = 0
                 temp_tuple = {}
-    file.close()
     return notes
 
 def append_notes_to_file(notes, file_name):
