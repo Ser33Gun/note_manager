@@ -4,11 +4,10 @@ from create_note_function import tuple_keys
 import json
 
 def save_notes_to_file(notes, file_name):
-    file = open(file_name, 'w', newline='\n', encoding='utf-8')
-    for i in range(len(notes)):
-        for j in range(len(tuple_keys)):
-            file.writelines(f"{tuple_keys[j]}:{notes[i][tuple_keys[j]]}\n")
-    file.close()
+    with open(file_name, 'w', encoding='utf-8') as file:
+        for i in range(len(notes)):
+            for j in range(len(tuple_keys)):
+                file.writelines(f"{tuple_keys[j]}:{notes[i][tuple_keys[j]]}\n")
 
 def load_notes_from_file(file_name):
     notes = []
@@ -16,19 +15,18 @@ def load_notes_from_file(file_name):
     try:
         file = open(file_name, 'r', encoding='utf-8')
     except FileNotFoundError:
-       print(Fore.LIGHTRED_EX + f"Файл {file_name} не найден." + Fore.LIGHTCYAN_EX + " Создан пустой файл. Запустите функцию заново.")
+       print(Fore.LIGHTRED_EX + f"Файл {file_name} не найден." + Fore.LIGHTCYAN_EX + " Создан пустой файл.")
        with open(file_name, 'x', encoding='utf-8') as file:
-           file.close()
-           return
+           return []
     except UnicodeDecodeError:
         print(Fore.LIGHTRED_EX + "Не удалось декодировать файл! Функция остановлена!")
-        return
+        return []
     except PermissionError:
         print(Fore.LIGHTRED_EX + "Нет доступа к файлу! Функция остановлена!")
-        return
+        return []
     except:
         print(Fore.LIGHTRED_EX + "Неизвестная ошибка. Функция остановлена!")
-        return
+        return []
 
     text = file.read().split('\n')
     count = 0
@@ -47,17 +45,15 @@ def load_notes_from_file(file_name):
     return notes
 
 def append_notes_to_file(notes, file_name):
-    file = open(file_name, 'a', newline='\n', encoding='utf-8')
-    for i in range(len(notes)):
-        for j in range(len(tuple_keys)):
-            file.writelines(f"{tuple_keys[j]}:{notes[i][tuple_keys[j]]}\n")
-    file.close()
+    with open(file_name, 'a', encoding='utf-8') as file:
+        for i in range(len(notes)):
+            for j in range(len(tuple_keys)):
+                file.writelines(f"{tuple_keys[j]}:{notes[i][tuple_keys[j]]}\n")
 
 def save_notes_json(notes, file_name):
     with open(file_name, 'w', encoding='utf-8') as file:
         data = json.dumps(notes, indent=4, ensure_ascii=False)
         file.write(data)
-    file.close()
     print(Fore.LIGHTGREEN_EX + "Запись в файл произведена успешно!")
 
 def load_notes_json(file_name):
@@ -67,13 +63,10 @@ def load_notes_json(file_name):
                 json_dict = json.loads(file.read())
             except JSONDecodeError:
                 print(Fore.LIGHTRED_EX + f"Файл {file_name} пуст или поврежден.")
-                return
-            file.close()
+                return []
     except FileNotFoundError:
         print(Fore.LIGHTRED_EX + f"Файл {file_name} не найден." + Fore.LIGHTCYAN_EX + " Создан пустой файл. Запустите функцию заново.")
         with open(file_name, 'x', encoding='utf-8') as file:
-            file.close()
-            return
-
+            return []
     print(Fore.LIGHTGREEN_EX + "Чтение из файла произведена успешно!")
     return json_dict
