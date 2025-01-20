@@ -7,7 +7,7 @@ def sort_for_display(note):
         print(Fore.LIGHTWHITE_EX + "Список ключей для сортировки:")
         for j in range(len(tuple_keys)):
             print(f"[{j}]: {tuple_keys[j]}")
-        key = int(input(Fore.LIGHTYELLOW_EX + "Введи номер ключа для изменения из списка:"))
+        key = int(input(Fore.LIGHTYELLOW_EX + "Введите номер ключа для изменения из списка:"))
         while not key in range(len(tuple_keys)):
             key = int(input(Fore.LIGHTRED_EX + "Неверно введен ключ. Введите номер ключа для изменения из списка:"))
         if input(Fore.LIGHTCYAN_EX +"Если Вы хотите отсортировать список в обратном порядке, то введите Да:").capitalize() == "Да":
