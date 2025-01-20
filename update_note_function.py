@@ -1,6 +1,5 @@
 from colorama import Fore
-import create_note_function as cnf
-from create_note_function import tuple_keys
+from create_note_function import get_input, get_status, get_date,tuple_keys
 from display_notes_function import display_note
 
 # Обновление значения.
@@ -22,17 +21,17 @@ def update_note(notes):
                 if key in range(len(tuple_keys)):
                     temp = ""
                     if key == 1:
-                        temp = cnf.get_input("Введите новое имя пользователя: ")
+                        temp = get_input("Введите новое имя пользователя: ")
                     elif key == 2:
-                        temp = cnf.get_input("Введите новый заголовок заметки: ")
+                        temp = get_input("Введите новый заголовок заметки: ")
                     elif key == 3:
-                        temp = cnf.get_input("Введите новое описание заметки: ")
+                        temp = get_input("Введите новое описание заметки: ")
                     elif key == 4:
-                        temp = cnf.get_status()
+                        temp = get_status()
                     elif key == 5:
-                        temp = cnf.get_date("начала", notes[i][tuple_keys[4]], notes[i][tuple_keys[5]])
+                        temp = get_date("начала", notes[i][tuple_keys[4]], notes[i][tuple_keys[5]])
                     elif key == 6:
-                        temp = cnf.get_date("конца", notes[i][tuple_keys[5]])
+                        temp = get_date("конца", notes[i][tuple_keys[5]])
 
                     # Уточняем перед внесением изменений.
                     if input(Fore.LIGHTCYAN_EX + "Если Вы уверены, что хотите обновить поле, введите Да:").capitalize() == "Да":

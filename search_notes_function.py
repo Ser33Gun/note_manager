@@ -1,8 +1,7 @@
 from colorama import Fore, Style
 
-import create_note_function
 from display_notes_function import display_note
-from create_note_function import tuple_keys
+from create_note_function import get_input, get_status, tuple_keys
 
 # Мини функция возвращает bool, если найдено совпадение.
 def search_logic (notes, i, j, keyword=None, status=None):
@@ -21,10 +20,10 @@ def search_notes(notes):
 
     keyword = status = None
     if input(Fore.LIGHTCYAN_EX + "Если Вы хотите сделать поиск по статусу, то введите Да:").capitalize() == "Да":
-        status = create_note_function.get_status()
+        status = get_status()
     if input(
             Fore.LIGHTCYAN_EX + "Если Вы хотите сделать поиск по ключевому слову, то введите Да:").capitalize() == "Да":
-        keyword = create_note_function.get_input(
+        keyword = get_input(
             "Введите ключевое слово для поиска в ключах Имя, Заголовок, Описание, Статус:")
     note = []
     if keyword is None and status is None:

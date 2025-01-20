@@ -3,7 +3,7 @@ from colorama import Fore, Back, Style
 
 
 # Создание заметки.
-import create_note_function
+from create_note_function import add_note
 #Запись в файл
 from work_with_file import save_notes_json, load_notes_json
 # Обновление заметки.
@@ -29,7 +29,7 @@ def menu_function (notes):
         if input_menu == 0:
             display_note(notes,None)
         elif input_menu == 1:
-            create_note_function.add_note(notes)
+            add_note(notes)
         elif input_menu == 2:
             delete_note(notes)
         elif input_menu == 3:
