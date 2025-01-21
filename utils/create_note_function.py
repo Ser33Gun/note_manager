@@ -1,20 +1,37 @@
+import random
 from datetime import datetime, timedelta
 from colorama import Fore, Back
-
+from utils import tuple_keys
 
 # Перевод строки в дату, если строка дана в одном из 6 форматов.
 def create_date (str_date):
     formated_date = ""
-    date_formats = ("%Y-%m-%d", "%Y-%d-%m", "%m-%d-%Y", "%m-%Y-%d", "%d-%m-%Y", "%d-%m-%Y")
+    formate_list = []
+    date_formats = ("%Y-%m-%d", "%Y-%d-%m", "%m-%d-%Y", "%m-%Y-%d", "%d-%m-%Y", "%d-%Y-%m")
     for i in date_formats:
         try:
-            formated_date = datetime.strptime(str_date, i).date()
+            datetime.strptime(str_date, i).date()
+            formate_list.append(i)
         except ValueError:
             pass
-    if formated_date == "":
+    if not formate_list:
         print(Fore.LIGHTRED_EX + "Дата задачи введена некорректно! Повторите ввод.")
         return None
-    return formated_date
+    elif len(formate_list) == 1:
+        return datetime.strptime(str_date, formate_list[0]).date()
+    elif len(formate_list) > 1:
+        while True:
+            print()
+            print(Fore.LIGHTYELLOW_EX + "Подходит несколько вариантов формата даты. Выберите один из списка ниже:")
+            for i in range(len(formate_list)):
+                print(f"[{i}]: {formate_list[i]}")
+            try:
+                key = int(input(Fore.LIGHTYELLOW_EX + "Введите цифру из списка выше."))
+            except ValueError:
+                print(Fore.LIGHTRED_EX + "Требуется ввести цифру из списка выше.")
+                continue
+            if key in range((len(formate_list))):
+                return datetime.strptime(str_date, formate_list[key]).date()
 
 # Сравнение даты + возврат даты.
 def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%Y-%m-%d").date()):
@@ -62,9 +79,10 @@ def get_status():
         input_status = input()
         if input_status != "":
             # Проверяем ввод. Если есть цифра или слово из списка - меняем
-            for i in range(len(tuple_status)):
-                if input_status.capitalize() in tuple_status[i] or (input_status.isdigit() and int(input_status) == i):
-                    return tuple_status[i]
+            if input_status.capitalize() in tuple_status:
+                return input_status
+            if input_status.isdigit() and int(input_status) in range(len(tuple_status)):
+                return tuple_status[int(input_status)]
             else:
                 print(Fore.LIGHTRED_EX + "\nНет такого статуса в списке. Введите статус заново.")
 
@@ -77,9 +95,9 @@ def get_input(text):
     return value
 
 # Создание одной заметки
-def create_one_note(id):
+def create_one_note(notes):
     note = {
-        tuple_keys[0] : id,
+        tuple_keys[0] : generate_unique_id(notes),
         tuple_keys[1] : get_input(Back.RESET + "Введите имя пользователя: "),
         tuple_keys[2] : get_input("Введите заголовок заметки: "),
         tuple_keys[3] : get_input("Введите описание заметки: "),
@@ -89,28 +107,24 @@ def create_one_note(id):
     }
     return note
 
+def generate_unique_id(notes):
+    # Решил использовать числа меньше, методом Рандома (до 10000 значений).
+    # Если потом понадобится масштабировать - возьму uuid.
+    while True:
+        id = random.randint(1, 10_000)
+        # Проверка уникального значения.
+        for i in range(len(notes)):
+            if id == notes[i][tuple_keys[0]]:
+                break
+        else:
+            return id
+    # По умолчанию в задании.
+    #return uuid.uuid4()
+
 # Добавление заметки в словарь.
 def add_note (notes):
     check_new_note = True
     while check_new_note:
-        count = 1
-        check_exist = True
-
-        #Подбор первого свободного значения ID.
-        while check_exist:
-            if notes:
-                for i in range(len(notes)):
-                    if str(count) in notes[i][tuple_keys[0]]:
-                        check_exist = True
-                        count += 1
-                        break
-                    else:
-                        check_exist = False
-            else:
-                check_exist = False
-        notes.append(create_one_note(count))
+        notes.append(create_one_note(notes))
         if input(Fore.LIGHTCYAN_EX + "Если Вы хотите добавить еще одну заметку введите 'Да':").capitalize() != "Да":
             check_new_note = False
-
-# Кортеж с ключами.
-tuple_keys = ("Id", "Имя", "Заголовок", "Описание", "Статус", "Дата начала", "Дата истечения")
