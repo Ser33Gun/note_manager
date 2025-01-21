@@ -1,5 +1,5 @@
-from colorama import Fore, Back, Style
-from create_note_function import tuple_keys
+from colorama import Fore, Style
+from utils import tuple_keys
 
 # Сортировка списка для вывода
 def sort_for_display(note):
@@ -24,11 +24,11 @@ def display_note (note, key = None, full = True):
     if not note:
         print(Fore.LIGHTRED_EX + "Нет сохраненных заметок.")
         return
+    note = sort_for_display(note)
     if input(Fore.LIGHTCYAN_EX + "\nЕсли Вы хотите получить только ID, имя пользователя и заголовок заметки, введите Да:").capitalize() == "Да":
         full = False
     print(Fore.LIGHTGREEN_EX + "Собранная информация о заметках:")
-    note = sort_for_display(note)
-    max_columns = []
+    max_columns = [] # Максимальная длина столбца для вывода.
     # Получаем максимальную длину столбца.
     for j in range(len(tuple_keys)):
         len_el = []
