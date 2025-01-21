@@ -1,6 +1,6 @@
 from colorama import Fore
-from create_note_function import get_input, get_status, get_date,tuple_keys
-from display_notes_function import display_note
+from utils import tuple_keys, get_input, get_status, get_date
+from interface import display_note
 
 # Обновление значения.
 def update_note(notes):
