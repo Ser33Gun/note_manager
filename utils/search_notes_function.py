@@ -1,7 +1,7 @@
-from colorama import Fore, Style
+from colorama import Fore
 
-from display_notes_function import display_note
-from create_note_function import get_input, get_status, tuple_keys
+from interface import display_note
+from utils import get_input, get_status, tuple_keys
 
 # Мини функция возвращает bool, если найдено совпадение.
 def search_logic (notes, i, j, keyword=None, status=None):
@@ -34,6 +34,9 @@ def search_notes(notes):
             if search_logic(notes, i, j, keyword, status):
                 note.append(notes[i])
                 break
+    return note
+
+def display_searching_notes(note):
     if note:
         display_note(note)
     else:
