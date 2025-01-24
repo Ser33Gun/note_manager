@@ -1,6 +1,6 @@
 from colorama import Fore
-from display_notes_function import display_note
-from create_note_function import tuple_keys
+from interface import display_note
+from utils import tuple_keys
 
 def delete_note(notes):
     # Подфункция фактического удаление заметки
