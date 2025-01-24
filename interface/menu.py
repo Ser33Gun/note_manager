@@ -1,19 +1,14 @@
 # Красим вывод
-from colorama import Fore, Back, Style
+from colorama import Fore, Back
 
+# Создание, обновление, поиск, удаление заметки.
+from utils import add_note, update_note, check_exist_notes, search_notes, delete_note, display_searching_notes
 
-# Создание заметки.
-from create_note_function import add_note
-#Запись в файл
-from work_with_file import save_notes_json, load_notes_json
-# Обновление заметки.
-from update_note_function import update_note, check_exist_notes
-# Поиск заметки
-from search_notes_function import search_notes
-#Удаление заявки
-from delete_note import delete_note
+#Чтение / Запись в файл
+from data import save_notes_json, load_notes_json
+
 # Форматированный вывод списка
-from display_notes_function import display_note
+from interface import display_note
 
 # Меню.
 def menu_function (notes):
@@ -37,14 +32,14 @@ def menu_function (notes):
             if notes:
                 update_note(notes)
         elif input_menu == 4:
-            search_notes(notes)
+            display_searching_notes(search_notes(notes))
         elif input_menu == 5:
-            rf = check_exist_notes(notes, load_notes_json('ex.json'))
+            rf = check_exist_notes(notes, load_notes_json('../ex.json'))
             if rf:
                 notes.extend(rf)
                 print(Fore.LIGHTGREEN_EX + "Добавление значений из файла произведена успешно!")
         elif input_menu == 6:
-            save_notes_json(notes, 'ex.json')
+            save_notes_json(notes, '../ex.json')
         elif input_menu == 7:
             print(Fore.LIGHTGREEN_EX +"Программа завершается, до свидания!")
             break
