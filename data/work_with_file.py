@@ -1,6 +1,6 @@
 from colorama import Fore
 from json import JSONDecodeError
-from create_note_function import tuple_keys
+from utils import tuple_keys
 import json
 
 def save_notes_to_file(notes, file_name):
