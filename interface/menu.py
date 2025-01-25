@@ -21,7 +21,11 @@ def menu_function (notes):
         print("Выберите пункт из меню, вводом нужной цифры:")
         for i in range(len(tuple_menu)):
             print(f"[{i}]: {tuple_menu[i]}")
-        input_menu = int(input())
+        try:
+            input_menu = int(input())
+        except ValueError:
+            print(Fore.LIGHTRED_EX + "Введен некорректный ключ. Повторите ввод!")
+            continue
         if input_menu == 0:
             display_note(notes,None)
         elif input_menu == 1:
@@ -42,14 +46,14 @@ def menu_function (notes):
         elif input_menu == 6:
             save_notes_json(notes, '../ex.json')
         elif input_menu == 7:
-            save_note_to_db(notes, '../data/testnotes.db')
+            save_note_to_db(notes, '../data/notes.db')
         elif input_menu == 8:
-            load_notes_from_db(notes, '../data/testnotes.db')
+            load_notes_from_db(notes, '../data/notes.db')
         elif input_menu == 9:
             print(Fore.LIGHTGREEN_EX + "Программа завершается, до свидания!")
             break
         else:
-            print(Fore.LIGHTRED_EX + "Введен некорректный ключ. Повторите ввод!")
+            print(Fore.LIGHTRED_EX + "Введен ключ, отсутствующий в списке. Повторите ввод!")
 
 # Файл для хранения всех заметок.
 notes = []
