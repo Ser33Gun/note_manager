@@ -38,7 +38,8 @@ class TestNoteManager(unittest.TestCase):
     def test_create_date(self):
         message = "Test value is none."
         # Проверка генерации даты.
-        self.assertEqual(datetime.strptime("2025-01-10", "%Y-%m-%d").date(), utils.create_note_function.get_date("начала"),)
+        self.assertEqual(datetime.strptime("2025-01-10", "%Y-%m-%d").strftime("%d-%m-%Y"),
+                         utils.create_note_function.get_date("начала"))
         self.assertIsNotNone(utils.create_note_function.create_date("2025-01-10"))
         # Пример неудачного теста
         #self.assertIsNotNone(utils.create_note_function.create_date("sometext"), message)
