@@ -5,7 +5,6 @@ from utils import tuple_keys
 
 # Перевод строки в дату, если строка дана в одном из 6 форматов.
 def create_date (str_date):
-    formated_date = ""
     formate_list = []
     date_formats = ("%Y-%m-%d", "%Y-%d-%m", "%m-%d-%Y", "%m-%Y-%d", "%d-%m-%Y", "%d-%Y-%m")
     for i in date_formats:
@@ -34,16 +33,17 @@ def create_date (str_date):
                 return datetime.strptime(str_date, formate_list[key]).date()
 
 # Сравнение даты + возврат даты.
+# Возврат даты происходит в строковом формате "%d-%m-%Y"
 def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%Y-%m-%d").date()):
     date_today = datetime.today().date()
     print(Fore.LIGHTYELLOW_EX + f"Введите дату {word} задачи через дефис, например 31-12-2024:")
     if word.capitalize() == "Начала":
-        output = "Если введена пустая строка, то дата " + word + " будет равна текущей дате."
+        output = "Если введена пустая строка, то дата " + word.lower() + " будет равна текущей дате."
     elif word.capitalize() == "Конца":
-        output = "Если введена пустая строка, то дата " + word + " будет равна неделе спустя, от текущей даты."
+        output = "Если введена пустая строка, то дата " + word.lower() + " будет равна неделе спустя, от текущей даты."
     else:
         print("Некорректный ввод!")
-        return date_today
+        return date_today.strftime("%d-%m-%Y")
     str_date = input(output)
 
     # Проверка на пустую строку и сразу возврат.
@@ -51,22 +51,22 @@ def get_date (word, date = None, issue_date = datetime.strptime("3000-01-01", "%
     if str_date == "":
         if word.capitalize() == "Начала":
             print(Fore.LIGHTGREEN_EX + "Дата начала заметки установлена на сегодня.")
-            return date_today
+            return date_today.strftime("%d-%m-%Y")
         else:
             print(Fore.LIGHTGREEN_EX + "Дата истечения заметки установлена через 7 дней.")
-            return date_today + timedelta(7)
+            return (date_today + timedelta(7)).strftime("%d-%m-%Y")
 
     # Если не пустая строка, то
     formated_date = create_date(str_date)
     while formated_date is None:
-        formated_date = create_date(input(Fore.LIGHTYELLOW_EX + f"Введите дату {word} задачи через дефис, например 31-12-2024:"))
+        formated_date = create_date(input(Fore.LIGHTYELLOW_EX + f"Введите дату {word.lower()} задачи через дефис, например 31-12-2024:"))
 
     # Дата начала меньше даты истечения. (Проверка)
     if word.capitalize() == "Начала":
         if formated_date > issue_date:
             print(Fore.LIGHTRED_EX + "Введенная дата начала больше, чем дата истечения. Изменения не внесены.")
             return date
-    return formated_date
+    return formated_date.strftime("%d-%m-%Y")
 
 #Ввод статуса заявки из списка, остальные статусы отбрасываются.
 def get_status():
@@ -102,8 +102,8 @@ def create_one_note(notes):
         tuple_keys[2] : get_input("Введите заголовок заметки: "),
         tuple_keys[3] : get_input("Введите описание заметки: "),
         tuple_keys[4] : get_status(),
-        tuple_keys[5] : str(get_date("начала")),
-        tuple_keys[6] : str(get_date("конца"))
+        tuple_keys[5] : get_date("начала"),
+        tuple_keys[6] : get_date("конца")
     }
     return note
 
