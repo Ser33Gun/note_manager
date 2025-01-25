@@ -24,7 +24,7 @@ def search_notes(notes):
     if input(
             Fore.LIGHTCYAN_EX + "Если Вы хотите сделать поиск по ключевому слову, то введите Да:").capitalize() == "Да":
         keyword = get_input(
-            "Введите ключевое слово для поиска в ключах Имя, Заголовок, Описание, Статус:")
+            f"Введите ключевое слово для поиска в ключах {tuple_keys[1]}, {tuple_keys[2]}, {tuple_keys[3]}, {tuple_keys[4]}:")
     note = []
     if keyword is None and status is None:
         print(Fore.LIGHTRED_EX + "Ключевых слов не указано! Поиск не был произведен.")
