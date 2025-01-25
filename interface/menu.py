@@ -5,14 +5,15 @@ from colorama import Fore, Back
 from utils import add_note, update_note, check_exist_notes, search_notes, delete_note, display_searching_notes
 
 #Чтение / Запись в файл
-from data import save_notes_json, load_notes_json
+from data import save_notes_json, load_notes_json, save_note_to_db, load_notes_from_db
 
 # Форматированный вывод списка
 from interface import display_note
 
 # Меню.
 def menu_function (notes):
-    tuple_menu = ("Вывести текущие заметки", "Добавить заметку", "Удалить заметку", "Изменить заметку", "Найти заметку", "Прочитать из файла","Записать в файл", "Выход")
+    tuple_menu = ("Вывести текущие заметки", "Добавить заметку", "Удалить заметку", "Изменить заметку",
+                  "Найти заметку", "Прочитать из файла","Записать в файл", "Добавить в БД", "Считать с БД" , "Выход")
     print(Fore.LIGHTWHITE_EX + "Добро пожаловать в Менеджер заметок!")
     # Меню отображается в бесконечном цикле, выход по ключу меню.
     while True:
@@ -41,11 +42,17 @@ def menu_function (notes):
         elif input_menu == 6:
             save_notes_json(notes, '../ex.json')
         elif input_menu == 7:
-            print(Fore.LIGHTGREEN_EX +"Программа завершается, до свидания!")
+            save_note_to_db(notes, '../data/testnotes.db')
+        elif input_menu == 8:
+            load_notes_from_db(notes, '../data/testnotes.db')
+        elif input_menu == 9:
+            print(Fore.LIGHTGREEN_EX + "Программа завершается, до свидания!")
             break
         else:
             print(Fore.LIGHTRED_EX + "Введен некорректный ключ. Повторите ввод!")
 
 # Файл для хранения всех заметок.
 notes = []
-menu_function(notes)
+
+if __name__ == '__main__':
+    menu_function(notes)

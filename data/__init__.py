@@ -1,1 +1,2 @@
 from data.work_with_file import save_notes_json, load_notes_json
+from data.setup_database import save_note_to_db, load_notes_from_db
