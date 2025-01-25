@@ -1,5 +1,5 @@
 # Кортеж с ключами.
-tuple_keys = ("Id", "Имя", "Заголовок", "Описание", "Статус", "Дата начала", "Дата истечения")
+tuple_keys = ("Id", "Username", "Title", "Content", "Status", "Created_date", "Issue_date")
 
 from utils.create_note_function import get_input, get_status, get_date, add_note
 from utils.update_note_function import check_exist_notes, update_note
